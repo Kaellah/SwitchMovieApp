@@ -2,6 +2,17 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 
 buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+    }
+}
+
+
+buildscript {
     ext.supportVersion = "25.3.0"
     ext.buildToolsVersion = "25.0.2"
 }
@@ -31,10 +42,23 @@ dependencies {
     compile "com.android.support:recyclerview-v7:$supportVersion"
 
     // DAGGER
-    apt 'com.google.dagger:dagger-compiler:2.0.1'
-    compile 'com.google.dagger:dagger:2.0.1'
+    compile 'javax.inject:javax.inject:1'
+    compile 'javax.annotation:javax.annotation-api:1.2'
+    compile 'com.google.dagger:dagger:2.2'
+    apt 'com.google.dagger:dagger-compiler:2.2'
     provided 'org.glassfish:javax.annotation:10.0-b28'
 
+    // RETROFIT
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
+
+    //OkHttp
+    compile 'com.squareup.okhttp3:okhttp:3.2.0'
+    compile 'com.squareup.okio:okio:1.7.0'
+
+    //Gson
+    compile 'com.google.code.gson:gson:2.7'
+    compile 'com.squareup.retrofit2:converter-gson:2.0.1'
+
     compile "com.github.bumptech.glide:glide:3.7.0"
+
 }
