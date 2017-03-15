@@ -1,24 +1,14 @@
 *.iml
 .gradle
 /local.properties
-/.idea
+/.idea/workspace.xml
+/.idea/libraries
 .DS_Store
 /build
 /captures
 .externalNativeBuild
 Будет удалено app/libs/
-Будет удалено app/src/main/java/com/kaellah/switchmovieapp/activity/
-Будет удалено app/src/main/java/com/kaellah/switchmovieapp/api/
-Будет удалено app/src/main/java/com/kaellah/switchmovieapp/application/
 Будет удалено app/src/main/java/com/kaellah/switchmovieapp/fragment/
 Будет удалено app/src/main/java/com/kaellah/switchmovieapp/utility/
 Будет удалено app/src/main/java/com/kaellah/switchmovieapp/view/
 Будет удалено app/src/main/res/drawable/
-Будет удалено libs/
-Будет удалено src/main/java/com/kaellah/switchmovieapp/activity/
-Будет удалено src/main/java/com/kaellah/switchmovieapp/api/
-Будет удалено src/main/java/com/kaellah/switchmovieapp/application/
-Будет удалено src/main/java/com/kaellah/switchmovieapp/fragment/
-Будет удалено src/main/java/com/kaellah/switchmovieapp/utility/
-Будет удалено src/main/java/com/kaellah/switchmovieapp/view/
-Будет удалено src/main/res/drawable/
