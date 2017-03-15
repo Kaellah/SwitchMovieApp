@@ -1,7 +1,9 @@
-package com.kaellah.switchmovieapp;
+package com.kaellah.switchmovieapp.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.kaellah.switchmovieapp.R;
 
 public class MainActivity extends AppCompatActivity {
 
