@@ -1,16 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.neenbedankt.android-apt'
-
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-    }
-}
-
 
 buildscript {
     ext.supportVersion = "25.3.0"
@@ -19,6 +9,12 @@ buildscript {
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     defaultConfig {
         applicationId "com.kaellah.switchmovieapp"
         minSdkVersion 17
@@ -41,6 +37,10 @@ dependencies {
     compile "com.android.support:appcompat-v7:$supportVersion"
     compile "com.android.support:recyclerview-v7:$supportVersion"
 
+    // RX JAVA
+    compile 'io.reactivex:rxandroid:1.0.1'
+    compile 'io.reactivex:rxjava:1.0.14'
+
     // DAGGER
     compile 'javax.inject:javax.inject:1'
     compile 'javax.annotation:javax.annotation-api:1.2'
@@ -49,16 +49,17 @@ dependencies {
     provided 'org.glassfish:javax.annotation:10.0-b28'
 
     // RETROFIT
-    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'
+    compile 'com.squareup.retrofit:adapter-rxjava:2.0.0-beta2'
+    compile 'com.squareup.retrofit:converter-gson:2.0.0-beta2'
 
-    //OkHttp
+    // OKHTTP
     compile 'com.squareup.okhttp3:okhttp:3.2.0'
     compile 'com.squareup.okio:okio:1.7.0'
+    compile 'com.squareup.okhttp:logging-interceptor:2.7.0'
 
-    //Gson
-    compile 'com.google.code.gson:gson:2.7'
-    compile 'com.squareup.retrofit2:converter-gson:2.0.1'
-
+    // COMMON
     compile "com.github.bumptech.glide:glide:3.7.0"
+    compile 'com.jakewharton:butterknife:7.0.1'
 
 }

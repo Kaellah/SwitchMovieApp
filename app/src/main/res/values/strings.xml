@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">SwitchMovieApp</string>
+
+    <string name="Latest_movies">Latest Movies</string>
 </resources>

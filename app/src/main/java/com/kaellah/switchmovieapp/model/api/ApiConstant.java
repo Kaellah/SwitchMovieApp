@@ -1,4 +1,4 @@
-package com.kaellah.switchmovieapp.api;
+package com.kaellah.switchmovieapp.model.api;
 
 /**
  * @author Chekashov R.(email:roman_woland@mail.ru)
@@ -6,6 +6,8 @@ package com.kaellah.switchmovieapp.api;
  */
 
 public @interface ApiConstant {
+
+    String API_KEY = "ebea8cfca72fdff8d2624ad7bbf78e4c";
 
     String BASE_URL = "http://api.themoviedb.org/3/";
 
