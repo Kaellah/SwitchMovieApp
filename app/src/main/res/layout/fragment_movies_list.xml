@@ -9,22 +9,32 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:layout_marginTop="?attr/actionBarSize"/>
+
+    <TextView
+        android:id="@+id/tv_load_more"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/spacing"
+        android:layout_marginLeft="@dimen/spacing_x3"
+        android:layout_marginRight="@dimen/spacing_x3"
+        android:layout_marginTop="@dimen/spacing_x3"
+        android:background="@drawable/sel_load_btn"
+        android:gravity="center"
+        android:padding="@dimen/spacing_d2"
+        android:text="@string/Load_more"
+        android:textSize="@dimen/text_big"/>
 
     <ProgressBar
         android:id="@+id/progress_bar"
         android:layout_width="@dimen/progress_bar_size"
         android:layout_height="@dimen/progress_bar_size"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"/>
-
-    <TextView
-        android:id="@+id/tv_load_more"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/recycler_view"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/spacing_x2"/>
+        android:visibility="gone"/>
 
 </RelativeLayout>

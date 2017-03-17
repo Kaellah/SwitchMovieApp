@@ -13,7 +13,7 @@ public class MainActivity extends BaseActivity
     @Override
     protected void onCreate(Bundle b) {
         super.onCreate(b);
-        setContentView(R.layout.activity_main);
+        super.setContentView(R.layout.activity_main);
 
         if (b == null) {
             startFragment(MovieListFragment.newInstance(), false);
@@ -27,16 +27,13 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void startMovieInfoFragment(Movie movie) {
-
     }
 
     @Override
     public void showProgressBar() {
-
     }
 
     @Override
     public void hideProgressBar() {
-
     }
 }

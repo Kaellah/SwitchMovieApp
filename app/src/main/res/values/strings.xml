@@ -2,4 +2,6 @@
     <string name="app_name">SwitchMovieApp</string>
 
     <string name="Latest_movies">Latest Movies</string>
+    <string name="Load_more">Load More</string>
+    <string name="err_empty_list">Empty List!</string>
 </resources>

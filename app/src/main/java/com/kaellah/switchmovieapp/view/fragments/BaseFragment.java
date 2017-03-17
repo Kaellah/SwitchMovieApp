@@ -3,14 +3,11 @@ package com.kaellah.switchmovieapp.view.fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.CallSuper;
-import android.support.annotation.DrawableRes;
 import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -53,22 +50,13 @@ public abstract class BaseFragment extends Fragment
 
     @Override
     public void onStart() {
-        super.onStart();
-
-//        final Context context = getContext();
-//        final ActionBar bar = context instanceof AppCompatActivity ? ((AppCompatActivity) context).getSupportActionBar() : null;
-//
-//        if (bar != null) {
-//            onActionBarReady(bar);
-//        }
-        // FIXME
-//        if (mToolbar != null) {
-//            final Context context = getContext();
-//            if (context instanceof AppCompatActivity) {
-//                onActionBarReady(mToolbar);
-//                ((AppCompatActivity) context).setSupportActionBar(mToolbar);
-//            }
-//        }
+        if (mToolbar != null) {
+            mToolbar.setTitle(getToolbarTitle());
+            final Context context = getContext();
+            if (context instanceof AppCompatActivity) {
+                ((AppCompatActivity) context).setSupportActionBar(mToolbar);
+            }
+        }
         super.onStart();
     }
 
@@ -126,26 +114,6 @@ public abstract class BaseFragment extends Fragment
         final Context context = getContext();
         if (context instanceof Activity) {
             ((Activity) context).onBackPressed();
-        }
-    }
-
-    @DrawableRes
-    protected int getToolbarIndicator() {
-        return 0;
-    }
-
-    @CallSuper
-    protected void onActionBarReady(@NonNull ActionBar bar) {
-        bar.setTitle(getToolbarTitle());
-
-        @DrawableRes final int indicator = getToolbarIndicator();
-        if (indicator == 0) {
-            bar.setDisplayHomeAsUpEnabled(false);
-            bar.setDisplayShowHomeEnabled(false);
-        } else {
-            bar.setDisplayHomeAsUpEnabled(true);
-            bar.setDisplayShowHomeEnabled(true);
-            bar.setHomeAsUpIndicator(indicator);
         }
     }
 

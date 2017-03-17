@@ -1,8 +1,6 @@
 package com.kaellah.switchmovieapp.model;
 
-import com.kaellah.switchmovieapp.model.dto.MovieDTO;
-
-import java.util.List;
+import com.kaellah.switchmovieapp.model.dto.MoviesListAnswerDTO;
 
 import rx.Observable;
 
@@ -13,5 +11,5 @@ import rx.Observable;
 
 public interface Model {
 
-    Observable<List<MovieDTO>> getMoviesList(int page);
+    Observable<MoviesListAnswerDTO> getMoviesList(int page);
 }

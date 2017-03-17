@@ -1,12 +1,10 @@
 package com.kaellah.switchmovieapp.model;
 
-import com.kaellah.switchmovieapp.other.App;
 import com.kaellah.switchmovieapp.model.api.ApiConstant;
 import com.kaellah.switchmovieapp.model.api.ApiInterface;
-import com.kaellah.switchmovieapp.model.dto.MovieDTO;
+import com.kaellah.switchmovieapp.model.dto.MoviesListAnswerDTO;
 import com.kaellah.switchmovieapp.other.AConstant;
-
-import java.util.List;
+import com.kaellah.switchmovieapp.other.App;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -42,7 +40,7 @@ public class ModelImpl implements Model {
     }
 
     @Override
-    public Observable<List<MovieDTO>> getMoviesList(int page) {
+    public Observable<MoviesListAnswerDTO> getMoviesList(int page) {
         return apiInterface
                 .getMovies(ApiConstant.API_KEY, page)
                 .compose(applySchedulers());

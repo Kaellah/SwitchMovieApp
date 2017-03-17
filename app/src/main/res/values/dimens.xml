@@ -4,6 +4,7 @@
     <dimen name="spacing_d2">6dp</dimen>
     <dimen name="spacing">12dp</dimen>
     <dimen name="spacing_x2">24dp</dimen>
+    <dimen name="spacing_x3">36dp</dimen>
 
     <dimen name="text_tiny">8sp</dimen>
     <dimen name="text_small">12sp</dimen>

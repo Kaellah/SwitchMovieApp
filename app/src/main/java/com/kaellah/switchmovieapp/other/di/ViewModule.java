@@ -13,7 +13,7 @@ import dagger.Provides;
 public class ViewModule {
 
     @Provides
-    MovieInfoPresenter provideRepoInfoPresenter() {
+    MovieInfoPresenter provideMovieInfoPresenter() {
         return new MovieInfoPresenter();
     }
 }
