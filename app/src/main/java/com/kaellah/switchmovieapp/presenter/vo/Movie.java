@@ -1,5 +1,7 @@
 package com.kaellah.switchmovieapp.presenter.vo;
 
+import com.kaellah.switchmovieapp.model.dto.MovieDTO;
+
 import java.io.Serializable;
 
 /**
@@ -14,10 +16,10 @@ public class Movie
     private String mOverview;
     private String mPosterPath;
 
-    public Movie(String originalTitle, String overview, String posterPath) {
-        mOriginalTitle = originalTitle;
-        mOverview = overview;
-        mPosterPath = posterPath;
+    public Movie(MovieDTO movieDTO) {
+        mOriginalTitle = movieDTO.getOriginalTitle();
+        mOverview = movieDTO.getOverview();
+        mPosterPath = movieDTO.getPosterPath();
     }
 
     public String getOriginalTitle() {

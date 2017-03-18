@@ -28,7 +28,7 @@ public class MovieListMapper implements Func1<MoviesListAnswerDTO, List<Movie>> 
         }
 
         return Observable.from(answerDTO.getResults())
-                .map(movieDTO -> new Movie(movieDTO.getOriginalTitle(), movieDTO.getOverview(), movieDTO.getPosterPath()))
+                .map(Movie::new)
                 .toList()
                 .toBlocking()
                 .first();

@@ -26,7 +26,7 @@ public class Utils {
         }
     }
 
-    public static String getCorrectImageUrl(String posterPath) {
-        return String.format(ApiConstant.FORMAT_IMAGE_URL, posterPath);
+    public static String getCorrectImageUrl(String posterPath, int width) {
+        return String.format(ApiConstant.FORMAT_IMAGE_URL, width, posterPath);
     }
 }

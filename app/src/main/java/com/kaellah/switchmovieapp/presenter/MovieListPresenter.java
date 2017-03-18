@@ -97,9 +97,6 @@ public class MovieListPresenter extends BasePresenter {
         } else {
             loadMovies(1);
         }
-//        if (isRepoListNotEmpty()) {
-//            mView.showMovieList(mMovieList);
-//        }
     }
 
     private boolean isRepoListNotEmpty() {
