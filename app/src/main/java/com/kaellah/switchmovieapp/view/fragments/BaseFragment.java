@@ -76,6 +76,7 @@ public abstract class BaseFragment extends Fragment
     public void onStart() {
         if (mToolbar != null) {
             mToolbar.setTitle(getToolbarTitle());
+
             final Context context = getContext();
             if (context instanceof AppCompatActivity) {
                 ((AppCompatActivity) context).setSupportActionBar(mToolbar);

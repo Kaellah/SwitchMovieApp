@@ -54,4 +54,8 @@ public class MovieInfoPresenter extends BasePresenter {
             outState.putParcelable(EXTRA_MOVIE, mMovie);
         }
     }
+
+    public Movie getMovie() {
+        return mMovie;
+    }
 }

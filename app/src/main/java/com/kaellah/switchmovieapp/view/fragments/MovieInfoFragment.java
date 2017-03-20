@@ -157,4 +157,10 @@ public class MovieInfoFragment extends BaseFragment
             return false;
         }
     };
+
+    @Nullable
+    @Override
+    protected CharSequence getToolbarTitle() {
+        return mPresenter.getMovie().getTitle();
+    }
 }
