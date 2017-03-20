@@ -4,4 +4,11 @@
     <string name="Latest_movies">Latest Movies</string>
     <string name="Load_more">Load More</string>
     <string name="err_empty_list">Empty List!</string>
+
+    <string name="Score">Score:</string>
+    <string name="Rating">Rating:</string>
+    <string name="Release_date">Release Date:</string>
+
+    <string name="Adult">R</string>
+    <string name="PG">PG-13</string>
 </resources>

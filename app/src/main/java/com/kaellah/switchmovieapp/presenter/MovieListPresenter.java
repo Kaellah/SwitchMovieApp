@@ -1,6 +1,7 @@
 package com.kaellah.switchmovieapp.presenter;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.kaellah.switchmovieapp.other.App;
 import com.kaellah.switchmovieapp.presenter.mappers.MovieListMapper;
@@ -32,6 +33,8 @@ public class MovieListPresenter extends BasePresenter {
 
     private List<Movie> mMovieList;
 
+    private int mPage = 0;
+
     @Inject
     public MovieListPresenter() {
     }
@@ -47,15 +50,20 @@ public class MovieListPresenter extends BasePresenter {
     }
 
     public void loadMovies(int page) {
+        Log.e("loadMovies", "page = " + page);
+
+        mPage = page < 0 ? mPage + 1 : page;
         showLoadingState();
 
-        Subscription subscription = model.getMoviesList(page)
+        Subscription subscription = model.getMoviesList(mPage)
                 .map(mMovieListMapper)
                 .subscribe(new Observer<List<Movie>>() {
                     @Override
                     public void onCompleted() {
                         hideLoadingState();
                     }
+
+
 
                     @Override
                     public void onError(Throwable e) {
@@ -70,11 +78,12 @@ public class MovieListPresenter extends BasePresenter {
                                 mMovieList = new ArrayList<>();
                             }
                             mMovieList.addAll(movies);
-                            mView.showMovieList(mMovieList);
+                            mView.showMovieList(movies);
 
                         } else {
                             mView.showEmptyList();
                         }
+                        Log.e("loadMovies", "size = " + mMovieList.size());
                     }
                 });
         addSubscription(subscription);
@@ -86,12 +95,9 @@ public class MovieListPresenter extends BasePresenter {
         }
     }
 
-    public void clickMovie(Movie movie) {
-        mView.startMovieInfoFragment(movie);
-    }
-
     public void onViewCreated(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
+            //noinspection unchecked
             mMovieList = (List<Movie>) savedInstanceState.getSerializable(BUNDLE_MOVIE_LIST_KEY);
 
         } else {

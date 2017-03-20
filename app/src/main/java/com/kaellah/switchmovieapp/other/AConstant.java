@@ -9,4 +9,7 @@ public interface AConstant {
 
     String UI_THREAD = "UI_THREAD";
     String IO_THREAD = "IO_THREAD";
+
+     int IMAGE_WIDTH = 342;
+     int IMAGE_HEIGHT = IMAGE_WIDTH * 3;
 }

@@ -1,17 +1,13 @@
 package com.kaellah.switchmovieapp.view.fragments;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.CheckResult;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
-import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.kaellah.switchmovieapp.R;
+import com.kaellah.switchmovieapp.other.RecyclerScrollListener;
 import com.kaellah.switchmovieapp.other.Utils;
 import com.kaellah.switchmovieapp.other.di.view.DaggerViewComponent;
 import com.kaellah.switchmovieapp.other.di.view.ViewComponent;
@@ -19,8 +15,10 @@ import com.kaellah.switchmovieapp.other.di.view.ViewDynamicModule;
 import com.kaellah.switchmovieapp.presenter.MovieListPresenter;
 import com.kaellah.switchmovieapp.presenter.Presenter;
 import com.kaellah.switchmovieapp.presenter.vo.Movie;
-import com.kaellah.switchmovieapp.view.ActivityCallback;
 import com.kaellah.switchmovieapp.view.adapters.MoviesAdapter;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -40,22 +38,20 @@ public class MovieListFragment extends BaseFragment
     @Bind(R.id.recycler_view)
     protected RecyclerView mRecyclerView;
 
-    @Bind(R.id.progress_bar)
-    protected ProgressBar progressBar;
-
     @Inject
     protected MovieListPresenter mPresenter;
 
-    private ActivityCallback activityCallback;
-
-    private MoviesAdapter mAdapter;
-
     private ViewComponent mViewComponent;
 
+    private boolean mAfterCreate;
+
+    // ADAPTER
+    private MoviesAdapter mAdapter;
+
     @OnClick(R.id.tv_load_more)
-    public void onClickLoadMore(View v) {
+    public void onClickLoadMore(android.view.View v) {
         if (mPresenter != null) {
-            mPresenter.loadMovies(1);
+            mPresenter.loadMovies(-1);
         }
     }
 
@@ -74,40 +70,48 @@ public class MovieListFragment extends BaseFragment
         mViewComponent.inject(this);
         super.onCreate(b);
 
-        mAdapter = new MoviesAdapter(mPresenter);
-    }
-
-    @Nullable
-    @Override
-    public android.view.View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
+        mAdapter = new MoviesAdapter();
+        mAfterCreate = true;
     }
 
     @Override
     public void onViewCreated(android.view.View v, @Nullable Bundle b) {
         super.onViewCreated(v, b);
 
-        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        mPresenter.onViewCreated(b);
+
+        final GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
+        mRecyclerView.setLayoutManager(gridLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
-        mPresenter.onViewCreated(b);
-    }
+        final RecyclerScrollListener recyclerScrollListener = new RecyclerScrollListener(gridLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                if (!mAfterCreate) {
+                    mPresenter.loadMovies(page);
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+                } else {
+                    mAfterCreate = false;
+                }
+            }
+        };
 
-        try {
-            activityCallback = (ActivityCallback) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement activityCallback");
-        }
+        mRecyclerView.addOnScrollListener(recyclerScrollListener);
     }
 
     @Override
     public void showError(String error) {
-        Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
+        Utils.showMessage(mRecyclerView, error);
+    }
+
+    @Override
+    public void showLoading() {
+        setRefreshing(true);
+    }
+
+    @Override
+    public void hideLoading() {
+        setRefreshing(false);
     }
 
     @Override
@@ -137,18 +141,26 @@ public class MovieListFragment extends BaseFragment
     }
 
     @Override
-    public void loadMore() {
-        mPresenter.loadMovies(1);
-    }
-
-    @Override
-    public void startMovieInfoFragment(Movie movie) {
-        activityCallback.startMovieInfoFragment(movie);
+    public void loadMore(int page) {
+        mPresenter.loadMovies(page);
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         mPresenter.onSaveInstanceState(outState);
+    }
+
+    @SuppressWarnings("unused")
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(Movie movie) {
+        if (movie != null) {
+            startFragment(MovieInfoFragment.newInstance(movie), true);
+        }
+    }
+
+    @Override
+    protected boolean hasSubscribe() {
+        return true;
     }
 }

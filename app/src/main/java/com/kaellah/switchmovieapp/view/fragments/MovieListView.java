@@ -15,7 +15,6 @@ public interface MovieListView extends View {
 
     void showEmptyList();
 
-    void loadMore();
+    void loadMore(int page);
 
-    void startMovieInfoFragment(Movie movie);
 }

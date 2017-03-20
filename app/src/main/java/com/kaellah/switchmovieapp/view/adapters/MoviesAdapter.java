@@ -3,7 +3,6 @@ package com.kaellah.switchmovieapp.view.adapters;
 import android.support.annotation.NonNull;
 import android.view.View;
 
-import com.kaellah.switchmovieapp.presenter.MovieListPresenter;
 import com.kaellah.switchmovieapp.presenter.vo.Movie;
 import com.kaellah.switchmovieapp.view.views.MovieItemView;
 
@@ -14,16 +13,13 @@ import com.kaellah.switchmovieapp.view.views.MovieItemView;
 
 public class MoviesAdapter extends BaseRecyclerAdapter<Movie, MovieItemView> {
 
-    private final MovieListPresenter mPresenter;
-
-    public MoviesAdapter(MovieListPresenter presenter) {
+    public MoviesAdapter() {
         super(null);
-        mPresenter = presenter;
     }
 
     @NonNull
     @Override
     protected MovieItemView obtain(@NonNull View parent, int viewType) {
-        return new MovieItemView(parent.getContext(), mPresenter);
+        return new MovieItemView(parent.getContext());
     }
 }

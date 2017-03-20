@@ -6,35 +6,41 @@
 
     <include layout="@layout/toolbar"/>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="?attr/actionBarSize"/>
+        android:layout_above="@+id/ll_container"
+        android:layout_marginTop="?attr/actionBarSize">
 
-    <TextView
-        android:id="@+id/tv_load_more"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/spacing"
-        android:layout_marginLeft="@dimen/spacing_x3"
-        android:layout_marginRight="@dimen/spacing_x3"
-        android:layout_marginTop="@dimen/spacing_x3"
-        android:background="@drawable/sel_load_btn"
         android:gravity="center"
-        android:padding="@dimen/spacing_d2"
-        android:text="@string/Load_more"
-        android:textSize="@dimen/text_big"/>
+        android:background="@android:color/white">
 
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        android:layout_width="@dimen/progress_bar_size"
-        android:layout_height="@dimen/progress_bar_size"
-        android:layout_below="@+id/recycler_view"
-        android:layout_centerHorizontal="true"
-        android:visibility="gone"/>
+        <TextView
+            android:id="@+id/tv_load_more"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing"
+            android:layout_marginLeft="@dimen/spacing_x3"
+            android:layout_marginRight="@dimen/spacing_x3"
+            android:layout_marginTop="@dimen/spacing"
+            android:background="@drawable/sel_load_btn"
+            android:gravity="center"
+            android:padding="@dimen/spacing_d2"
+            android:text="@string/Load_more"
+            android:textSize="@dimen/text_big"/>
+    </LinearLayout>
 
 </RelativeLayout>

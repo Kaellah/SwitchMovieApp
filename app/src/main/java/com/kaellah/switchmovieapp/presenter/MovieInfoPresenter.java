@@ -7,6 +7,8 @@ import com.kaellah.switchmovieapp.presenter.vo.Movie;
 import com.kaellah.switchmovieapp.view.fragments.MovieInfoView;
 import com.kaellah.switchmovieapp.view.fragments.View;
 
+import javax.inject.Inject;
+
 /**
  * @author Chekashov R.(email:roman_woland@mail.ru)
  * @since 16.03.17
@@ -14,7 +16,7 @@ import com.kaellah.switchmovieapp.view.fragments.View;
 
 public class MovieInfoPresenter extends BasePresenter {
 
-    private static final String BUNDLE_MOVIE_KEY = "BUNDLE_MOVIE_KEY";
+    private static final String EXTRA_MOVIE = "local.EXTRA_MOVIE";
 
     private MovieInfoView mView;
 
@@ -25,16 +27,23 @@ public class MovieInfoPresenter extends BasePresenter {
         return mView;
     }
 
-    public void onCreate(MovieInfoView view, Movie movie) {
-        App.getComponent().inject(this);
-        mView = view;
-        mMovie = movie;
+    @Inject
+    public MovieInfoPresenter() {
     }
 
-    public void onCreateView(Bundle savedInstanceState) {
+    public MovieInfoPresenter(MovieInfoView view) {
+        App.getComponent().inject(this);
+        mView = view;
+    }
+
+    public void onCreate(Bundle bundle) {
+        mMovie = bundle.getParcelable(EXTRA_MOVIE);
+    }
+
+    public void onViewCreated(Bundle savedInstanceState) {
 
         if (savedInstanceState != null) {
-            mMovie = (Movie) savedInstanceState.getSerializable(BUNDLE_MOVIE_KEY);
+            mMovie = savedInstanceState.getParcelable(EXTRA_MOVIE);
         }
 
         mView.showMovieInfo(mMovie);
@@ -42,7 +51,7 @@ public class MovieInfoPresenter extends BasePresenter {
 
     public void onSaveInstanceState(Bundle outState) {
         if (mMovie != null) {
-            outState.putSerializable(BUNDLE_MOVIE_KEY, mMovie);
+            outState.putParcelable(EXTRA_MOVIE, mMovie);
         }
     }
 }

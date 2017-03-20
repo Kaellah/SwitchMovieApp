@@ -7,10 +7,15 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
+import com.kaellah.switchmovieapp.R;
 import com.kaellah.switchmovieapp.other.Utils;
 import com.kaellah.switchmovieapp.view.fragments.BaseFragment;
+
+import butterknife.ButterKnife;
 
 /**
  * @author Chekashov R.(email:roman_woland@mail.ru)
@@ -19,9 +24,53 @@ import com.kaellah.switchmovieapp.view.fragments.BaseFragment;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
+    private SwipeRefreshLayout mRefreshLayout;
+
     @Override
     protected void onCreate(@Nullable Bundle b) {
         super.onCreate(b);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (mRefreshLayout != null) {
+            Utils.cleanUp(mRefreshLayout);
+        }
+        System.gc();
+    }
+
+    @Override
+    protected void onPostCreate(@Nullable Bundle b) {
+        super.onPostCreate(b);
+
+        final View refreshLayout = ButterKnife.findById(this, R.id.refresh_layout);
+
+        if (refreshLayout instanceof SwipeRefreshLayout) {
+            setRefreshLayout((SwipeRefreshLayout) refreshLayout);
+        }
+    }
+
+    protected final void setRefreshLayout(@NonNull SwipeRefreshLayout layout) {
+        mRefreshLayout = layout;
+
+        Utils.style(mRefreshLayout);
+        if (this instanceof SwipeRefreshLayout.OnRefreshListener) {
+            mRefreshLayout.setOnRefreshListener((SwipeRefreshLayout.OnRefreshListener) this);
+
+        } else {
+            mRefreshLayout.setEnabled(false);
+        }
+    }
+
+    public void setRefreshing(boolean refreshing) {
+        Utils.setRefreshing(mRefreshLayout, refreshing);
+    }
+
+    @Nullable
+    public final SwipeRefreshLayout getRefreshLayout() {
+        return mRefreshLayout;
     }
 
     @IdRes
