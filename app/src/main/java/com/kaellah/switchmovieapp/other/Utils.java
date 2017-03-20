@@ -22,6 +22,10 @@ import android.widget.Toast;
 import com.kaellah.switchmovieapp.model.api.ApiConstant;
 
 import java.lang.ref.WeakReference;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * @author Chekashov R.(email:roman_woland@mail.ru)
@@ -29,6 +33,9 @@ import java.lang.ref.WeakReference;
  */
 
 public class Utils {
+
+    private static final SimpleDateFormat FORMAT_INCOMING = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+    private static final SimpleDateFormat FORMAT_FINISH = new SimpleDateFormat("MMM dd, yyyy", Locale.ENGLISH);
 
     @NonNull
     public static String getTag(@NonNull Object object) {
@@ -42,7 +49,7 @@ public class Utils {
     }
 
     public static String getCorrectImageUrl(String posterPath, int width) {
-        return String.format(ApiConstant.FORMAT_IMAGE_URL, width, posterPath);
+        return String.format(Locale.getDefault(), ApiConstant.FORMAT_IMAGE_URL, width, posterPath);
     }
 
     @ColorInt
@@ -145,6 +152,20 @@ public class Utils {
         if (bitmap != null) {
             bitmap.recycle();
         }
+    }
+
+
+    public static String convertDate(@NonNull String dateString) {
+        Date date = null;
+        try {
+            date = FORMAT_INCOMING.parse(dateString);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return dateString;
+        }
+
+        return FORMAT_FINISH.format(date);
     }
 
     public static void setRefreshing(@Nullable SwipeRefreshLayout view, boolean refreshing) {

@@ -114,7 +114,7 @@ public class MovieInfoFragment extends BaseFragment
         mTvTitle.setText(movie.getTitle());
         mTvScore.setText(String.valueOf(movie.getVoteAverage()));
         mTvRating.setText(movie.getAdult() ? getString(R.string.Rating) : getString(R.string.PG));
-        mTvReleaseDate.setText(movie.getReleaseDate());
+        mTvReleaseDate.setText(Utils.convertDate(movie.getReleaseDate()));
         mTvOverview.setText(movie.getOverview());
     }
 
@@ -122,5 +122,15 @@ public class MovieInfoFragment extends BaseFragment
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         mPresenter.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onCleanUp() throws Exception {
+        Utils.cleanUp(mIvMovie);
+        Utils.cleanUp(mTvScore);
+        Utils.cleanUp(mTvRating);
+        Utils.cleanUp(mTvReleaseDate);
+        Utils.cleanUp(mTvTitle);
+        Utils.cleanUp(mTvOverview);
     }
 }

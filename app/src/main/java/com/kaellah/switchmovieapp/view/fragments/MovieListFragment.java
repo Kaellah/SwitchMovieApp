@@ -43,8 +43,6 @@ public class MovieListFragment extends BaseFragment
 
     private ViewComponent mViewComponent;
 
-    private boolean mAfterCreate;
-
     // ADAPTER
     private MoviesAdapter mAdapter;
 
@@ -71,7 +69,6 @@ public class MovieListFragment extends BaseFragment
         super.onCreate(b);
 
         mAdapter = new MoviesAdapter();
-        mAfterCreate = true;
     }
 
     @Override
@@ -87,12 +84,7 @@ public class MovieListFragment extends BaseFragment
         final RecyclerScrollListener recyclerScrollListener = new RecyclerScrollListener(gridLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                if (!mAfterCreate) {
-                    mPresenter.loadMovies(page);
-
-                } else {
-                    mAfterCreate = false;
-                }
+                mPresenter.loadMovies(page);
             }
         };
 
@@ -162,5 +154,10 @@ public class MovieListFragment extends BaseFragment
     @Override
     protected boolean hasSubscribe() {
         return true;
+    }
+
+    @Override
+    protected void onCleanUp() throws Exception {
+        Utils.cleanUp(mRecyclerView);
     }
 }

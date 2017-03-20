@@ -35,6 +35,8 @@ public class MovieListPresenter extends BasePresenter {
 
     private int mPage = 0;
 
+    private Subscription mSubscription;
+
     @Inject
     public MovieListPresenter() {
     }
@@ -55,15 +57,13 @@ public class MovieListPresenter extends BasePresenter {
         mPage = page < 0 ? mPage + 1 : page;
         showLoadingState();
 
-        Subscription subscription = model.getMoviesList(mPage)
+        mSubscription = model.getMoviesList(mPage)
                 .map(mMovieListMapper)
                 .subscribe(new Observer<List<Movie>>() {
                     @Override
                     public void onCompleted() {
                         hideLoadingState();
                     }
-
-
 
                     @Override
                     public void onError(Throwable e) {
@@ -86,11 +86,18 @@ public class MovieListPresenter extends BasePresenter {
                         Log.e("loadMovies", "size = " + mMovieList.size());
                     }
                 });
-        addSubscription(subscription);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mSubscription != null) {
+            mSubscription.unsubscribe();
+        }
     }
 
     public void onSaveInstanceState(Bundle outState) {
-        if (isRepoListNotEmpty()) {
+        if (isMovieListNotEmpty()) {
             outState.putSerializable(BUNDLE_MOVIE_LIST_KEY, new ArrayList<>(mMovieList));
         }
     }
@@ -101,11 +108,13 @@ public class MovieListPresenter extends BasePresenter {
             mMovieList = (List<Movie>) savedInstanceState.getSerializable(BUNDLE_MOVIE_LIST_KEY);
 
         } else {
-            loadMovies(1);
+            if (!isMovieListNotEmpty()) {
+                loadMovies(1);
+            }
         }
     }
 
-    private boolean isRepoListNotEmpty() {
+    private boolean isMovieListNotEmpty() {
         return (mMovieList != null && !mMovieList.isEmpty());
     }
 }

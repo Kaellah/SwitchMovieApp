@@ -107,7 +107,16 @@ public abstract class BaseFragment extends Fragment
             mRefreshLayout = null;
         }
         super.onDestroyView();
+
         ButterKnife.unbind(this);
+        try {
+            onCleanUp();
+
+        } catch (Exception ignore) {
+
+        } finally {
+            System.gc();
+        }
     }
 
     public void setRefreshing(boolean refreshing) {
@@ -176,4 +185,6 @@ public abstract class BaseFragment extends Fragment
     protected boolean hasSubscribe() {
         return false;
     }
+
+    protected abstract void onCleanUp() throws Exception;
 }
