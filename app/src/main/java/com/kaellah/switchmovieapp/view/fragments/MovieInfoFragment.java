@@ -1,5 +1,7 @@
 package com.kaellah.switchmovieapp.view.fragments;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,8 +12,11 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.kaellah.switchmovieapp.R;
 import com.kaellah.switchmovieapp.other.AConstant;
+import com.kaellah.switchmovieapp.other.ImageUtils;
 import com.kaellah.switchmovieapp.other.Utils;
 import com.kaellah.switchmovieapp.other.di.view.DaggerMovieViewComponent;
 import com.kaellah.switchmovieapp.other.di.view.MovieViewComponent;
@@ -47,6 +52,8 @@ public class MovieInfoFragment extends BaseFragment
     protected TextView mTvTitle;
     @Bind(R.id.tv_overview)
     protected TextView mTvOverview;
+    @Bind(R.id.parent)
+    protected View mBackground;
 
     @Inject
     protected MovieInfoPresenter mPresenter;
@@ -108,7 +115,9 @@ public class MovieInfoFragment extends BaseFragment
     public void showMovieInfo(Movie movie) {
         mGlide
                 .load(Utils.getCorrectImageUrl(movie.getPosterPath(), AConstant.IMAGE_WIDTH))
+                .asBitmap()
                 .placeholder(mPlaceholder)
+                .listener(mRequestListener)
                 .into(mIvMovie);
 
         mTvTitle.setText(movie.getTitle());
@@ -133,4 +142,19 @@ public class MovieInfoFragment extends BaseFragment
         Utils.cleanUp(mTvTitle);
         Utils.cleanUp(mTvOverview);
     }
+
+    private final RequestListener<String, Bitmap> mRequestListener = new RequestListener<String, Bitmap>() {
+        @Override
+        public boolean onException(Exception e, String model, Target<Bitmap> target, boolean isFirstResource) {
+            return false;
+        }
+
+        @Override
+        public boolean onResourceReady(Bitmap resource, String model, Target<Bitmap> target, boolean isFromMemoryCache, boolean isFirstResource) {
+            final Bitmap blurBitmap = ImageUtils.fastBlur(resource);
+            BitmapDrawable ob = new BitmapDrawable(getResources(), blurBitmap);
+            mBackground.setBackground(ob);
+            return false;
+        }
+    };
 }
