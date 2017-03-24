@@ -33,10 +33,9 @@ import butterknife.OnClick;
 public class MovieItemView extends FrameLayout
         implements DataEntity<Movie, MovieItemView> {
 
-
-
     // VALUES
     private final RequestManager mGlide;
+    private final int mHeight;
     private Movie mMovie;
 
     @BindDrawable(R.drawable.placeholder)
@@ -58,12 +57,15 @@ public class MovieItemView extends FrameLayout
         ButterKnife.bind(this);
 
         mGlide = isInEditMode() ? null : Glide.with(context);
+
+        final int screenHeight = Utils.getScreenSize(context).y;
+        mHeight = screenHeight / 3 < AConstant.IMAGE_HEIGHT ? screenHeight / 3: AConstant.IMAGE_HEIGHT;
     }
 
     @Override
     public void setLayoutParams(ViewGroup.LayoutParams params) {
         params.width = LayoutParams.MATCH_PARENT;
-        params.height = AConstant.IMAGE_HEIGHT;
+        params.height = mHeight;
 
         super.setLayoutParams(params);
     }

@@ -1,7 +1,9 @@
 package com.kaellah.switchmovieapp.other;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
@@ -12,6 +14,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -172,6 +175,13 @@ public class Utils {
         if (view != null && view.getParent() != null) {
             RefreshingRunnable.post(view, refreshing);
         }
+    }
+
+    public static Point getScreenSize(@NonNull Context context) {
+        final Point point = new Point();
+        final WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        windowManager.getDefaultDisplay().getSize(point);
+        return point;
     }
 
     private static final class RefreshingRunnable implements Runnable {
