@@ -23,10 +23,6 @@ public class ImageUtils {
 
         Bitmap bitmap = sentBitmap.copy(sentBitmap.getConfig(), true);
 
-        if (radius < 1) {
-            return (null);
-        }
-
         int w = bitmap.getWidth();
         int h = bitmap.getHeight();
 
