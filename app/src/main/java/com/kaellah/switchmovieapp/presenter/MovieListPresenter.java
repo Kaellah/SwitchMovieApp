@@ -1,8 +1,10 @@
 package com.kaellah.switchmovieapp.presenter;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 
+import com.kaellah.switchmovieapp.other.AConstant;
 import com.kaellah.switchmovieapp.other.App;
 import com.kaellah.switchmovieapp.presenter.mappers.MovieListMapper;
 import com.kaellah.switchmovieapp.presenter.vo.Movie;
@@ -23,8 +25,6 @@ import rx.Subscription;
  */
 
 public class MovieListPresenter extends BasePresenter {
-
-    private static final String BUNDLE_MOVIE_LIST_KEY = "BUNDLE_MOVIE_LIST_KEY";
 
     @Inject
     protected MovieListMapper mMovieListMapper;
@@ -96,16 +96,27 @@ public class MovieListPresenter extends BasePresenter {
         }
     }
 
+    @Override
     public void onSaveInstanceState(Bundle outState) {
         if (isMovieListNotEmpty()) {
-            outState.putSerializable(BUNDLE_MOVIE_LIST_KEY, new ArrayList<>(mMovieList));
+            outState.putParcelableArrayList(AConstant.EXTRA_MOVIE_LIST, (ArrayList<? extends Parcelable>) mMovieList);
+            outState.putInt(AConstant.EXTRA_PAGE, mPage);
         }
     }
 
-    public void onViewCreated(Bundle savedInstanceState) {
-        if (savedInstanceState != null) {
+    @Override
+    public void onViewCreated(Bundle b) {
+        if (b != null) {
             //noinspection unchecked
-            mMovieList = (List<Movie>) savedInstanceState.getSerializable(BUNDLE_MOVIE_LIST_KEY);
+            mMovieList = b.getParcelableArrayList(AConstant.EXTRA_MOVIE_LIST);
+            mPage = b.getInt(AConstant.EXTRA_PAGE);
+
+            if (isMovieListNotEmpty()) {
+                mView.showMovieList(mMovieList);
+
+            } else {
+                mView.showEmptyList();
+            }
 
         } else {
             if (!isMovieListNotEmpty()) {

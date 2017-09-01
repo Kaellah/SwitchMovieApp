@@ -12,4 +12,8 @@ public interface AConstant {
 
      int IMAGE_WIDTH = 342;
      int IMAGE_HEIGHT = IMAGE_WIDTH * 3;
+
+    String EXTRA_MOVIE_LIST = "local.EXTRA_MOVIE_LIST_KEY";
+    String EXTRA_PAGE = "local.EXTRA_PAGE";
+    String EXTRA_MOVIE = "local.EXTRA_MOVIE";
 }

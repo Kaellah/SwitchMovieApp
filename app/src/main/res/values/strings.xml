@@ -11,4 +11,5 @@
 
     <string name="Adult">R</string>
     <string name="PG">PG-13</string>
+    <string name="no_data">No data</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.kaellah.switchmovieapp.other;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Point;
@@ -159,7 +160,7 @@ public class Utils {
 
 
     public static String convertDate(@NonNull String dateString) {
-        Date date = null;
+        Date date;
         try {
             date = FORMAT_INCOMING.parse(dateString);
 
@@ -215,5 +216,9 @@ public class Utils {
                 POOL.release(this);
             }
         }
+    }
+
+    public static boolean isLand(@NonNull Context context) {
+        return Configuration.ORIENTATION_LANDSCAPE == context.getResources().getConfiguration().orientation;
     }
 }

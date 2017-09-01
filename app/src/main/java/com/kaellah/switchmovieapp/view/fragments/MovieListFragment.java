@@ -1,12 +1,10 @@
 package com.kaellah.switchmovieapp.view.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.CheckResult;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
 import com.kaellah.switchmovieapp.R;
 import com.kaellah.switchmovieapp.other.RecyclerScrollListener;
@@ -38,6 +36,12 @@ public class MovieListFragment extends BaseFragment
         implements MovieListView {
 
     public static final String LOG_TAG = "LOG_TAG";
+
+    private static final int SPAN_COUNT;
+
+    static {
+        SPAN_COUNT = 2;
+    }
 
     @Bind(R.id.recycler_view)
     protected RecyclerView mRecyclerView;
@@ -72,8 +76,6 @@ public class MovieListFragment extends BaseFragment
         mViewComponent.inject(this);
         super.onCreate(b);
 
-        Log.e(LOG_TAG, "MovieListFragment - onCreate");
-
         mAdapter = new MoviesAdapter();
     }
 
@@ -81,11 +83,11 @@ public class MovieListFragment extends BaseFragment
     public void onViewCreated(android.view.View v, @Nullable Bundle b) {
         super.onViewCreated(v, b);
 
-        Log.e(LOG_TAG, "MovieListFragment - onViewCreated");
-
         mPresenter.onViewCreated(b);
 
-        final GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
+        final GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),
+//                SPAN_COUNT);
+                Utils.isLand(getContext()) ? 4 : 2); // temporary, need implement from App
         mRecyclerView.setLayoutManager(gridLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
@@ -97,68 +99,6 @@ public class MovieListFragment extends BaseFragment
         };
 
         mRecyclerView.addOnScrollListener(recyclerScrollListener);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        Log.e(LOG_TAG, "MovieListFragment - onStart");
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        Log.e(LOG_TAG, "MovieListFragment - onResume");
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        Log.e(LOG_TAG, "MovieListFragment - onAttach");
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        Log.e(LOG_TAG, "MovieListFragment - onActivityCreated");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-
-        Log.e(LOG_TAG, "MovieListFragment - onPause");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        Log.e(LOG_TAG, "MovieListFragment - onStop");
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-
-        Log.e(LOG_TAG, "MovieListFragment - onDestroyView");
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-
-        Log.e(LOG_TAG, "MovieListFragment - onDetach");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        Log.e(LOG_TAG, "MovieListFragment - onDestroy");
     }
 
     @Override

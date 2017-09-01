@@ -2,6 +2,7 @@ package com.kaellah.switchmovieapp.presenter;
 
 import android.os.Bundle;
 
+import com.kaellah.switchmovieapp.other.AConstant;
 import com.kaellah.switchmovieapp.other.App;
 import com.kaellah.switchmovieapp.presenter.vo.Movie;
 import com.kaellah.switchmovieapp.view.fragments.MovieInfoView;
@@ -15,8 +16,6 @@ import javax.inject.Inject;
  */
 
 public class MovieInfoPresenter extends BasePresenter {
-
-    private static final String EXTRA_MOVIE = "local.EXTRA_MOVIE";
 
     private MovieInfoView mView;
 
@@ -36,22 +35,25 @@ public class MovieInfoPresenter extends BasePresenter {
         mView = view;
     }
 
-    public void onCreate(Bundle bundle) {
-        mMovie = bundle.getParcelable(EXTRA_MOVIE);
-    }
+//    public void onCreate(Bundle bundle) {
+//        mMovie = bundle.getParcelable(AConstant.EXTRA_MOVIE);
+//    }
 
-    public void onViewCreated(Bundle savedInstanceState) {
+    @Override
+    public void onViewCreated(Bundle b) {
+        if (b != null) {
+            mMovie = b.getParcelable(AConstant.EXTRA_MOVIE);
+            mView.showMovieInfo(mMovie);
 
-        if (savedInstanceState != null) {
-            mMovie = savedInstanceState.getParcelable(EXTRA_MOVIE);
+        } else {
+            mView.showError("No data");
         }
-
-        mView.showMovieInfo(mMovie);
     }
 
+    @Override
     public void onSaveInstanceState(Bundle outState) {
         if (mMovie != null) {
-            outState.putParcelable(EXTRA_MOVIE, mMovie);
+            outState.putParcelable(AConstant.EXTRA_MOVIE, mMovie);
         }
     }
 

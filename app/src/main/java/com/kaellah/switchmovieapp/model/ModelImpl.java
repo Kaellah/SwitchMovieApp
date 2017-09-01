@@ -34,9 +34,10 @@ public class ModelImpl implements Model {
 
     public ModelImpl() {
         App.getComponent().inject(this);
-        schedulersTransformer = o -> ((Observable) o).subscribeOn(ioThread)
+        schedulersTransformer = o -> ((Observable) o)
+                .subscribeOn(ioThread)
                 .observeOn(uiThread)
-                .unsubscribeOn(ioThread); // TODO: remove when https://github.com/square/okhttp/issues/1592 is fixed
+                .unsubscribeOn(ioThread);
     }
 
     @Override

@@ -54,6 +54,8 @@ public class MovieInfoFragment extends BaseFragment
     protected TextView mTvOverview;
     @Bind(R.id.parent)
     protected View mBackground;
+    @Bind(R.id.tv_error)
+    protected TextView mTvError;
 
     @Inject
     protected MovieInfoPresenter mPresenter;
@@ -85,7 +87,7 @@ public class MovieInfoFragment extends BaseFragment
         mViewComponent.inject(this);
         super.onCreate(b);
 
-        mPresenter.onCreate(b == null ? getArguments() : b);
+//        mPresenter.onCreate(b == null ? getArguments() : b);
         mGlide = Glide.with(this);
     }
 
@@ -93,7 +95,8 @@ public class MovieInfoFragment extends BaseFragment
     public void onViewCreated(View v, @Nullable Bundle b) {
         super.onViewCreated(v, b);
 
-        mPresenter.onViewCreated(b);
+//        mPresenter.onViewCreated(b);
+        mPresenter.onViewCreated(b == null ? getArguments() : b);
     }
 
     @Override
@@ -113,6 +116,8 @@ public class MovieInfoFragment extends BaseFragment
 
     @Override
     public void showMovieInfo(Movie movie) {
+        mTvError.setVisibility(View.GONE);
+
         mGlide
                 .load(Utils.getCorrectImageUrl(movie.getPosterPath(), AConstant.IMAGE_WIDTH))
                 .asBitmap()
@@ -146,6 +151,7 @@ public class MovieInfoFragment extends BaseFragment
     private final RequestListener<String, Bitmap> mRequestListener = new RequestListener<String, Bitmap>() {
         @Override
         public boolean onException(Exception e, String model, Target<Bitmap> target, boolean isFirstResource) {
+            showError("No data");
             return false;
         }
 
@@ -162,5 +168,10 @@ public class MovieInfoFragment extends BaseFragment
     @Override
     protected CharSequence getToolbarTitle() {
         return mPresenter.getMovie().getTitle();
+    }
+
+    @Override
+    public void showError(String error) {
+        mTvError.setVisibility(View.VISIBLE);
     }
 }
