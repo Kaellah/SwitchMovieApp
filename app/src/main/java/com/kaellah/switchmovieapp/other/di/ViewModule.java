@@ -1,6 +1,7 @@
 package com.kaellah.switchmovieapp.other.di;
 
 import com.kaellah.switchmovieapp.presenter.MovieInfoPresenter;
+import com.kaellah.switchmovieapp.presenter.MovieItemPresenter;
 
 import dagger.Module;
 import dagger.Provides;
@@ -15,5 +16,10 @@ public class ViewModule {
     @Provides
     MovieInfoPresenter provideMovieInfoPresenter() {
         return new MovieInfoPresenter();
+    }
+
+    @Provides
+    MovieItemPresenter provideMovieItemPresenter() {
+        return new MovieItemPresenter();
     }
 }

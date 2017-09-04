@@ -14,10 +14,14 @@ import com.bumptech.glide.RequestManager;
 import com.kaellah.switchmovieapp.R;
 import com.kaellah.switchmovieapp.other.AConstant;
 import com.kaellah.switchmovieapp.other.Utils;
+import com.kaellah.switchmovieapp.other.di.view.MovieViewComponent;
+import com.kaellah.switchmovieapp.presenter.MovieItemPresenter;
 import com.kaellah.switchmovieapp.presenter.vo.Movie;
 import com.kaellah.switchmovieapp.view.adapters.DataEntity;
 
 import org.greenrobot.eventbus.EventBus;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.BindDrawable;
@@ -31,19 +35,21 @@ import butterknife.OnClick;
 
 @SuppressLint("ViewConstructor")
 public class MovieItemView extends FrameLayout
-        implements DataEntity<Movie, MovieItemView> {
+        implements DataEntity<Movie, MovieItemView>, IMovieItemView {
 
     // VALUES
     private final RequestManager mGlide;
     private final int mHeight;
     private Movie mMovie;
 
+    @Inject
+    protected MovieItemPresenter mPresenter;
+    private MovieViewComponent mViewComponent;
+
     @BindDrawable(R.drawable.placeholder)
     protected Drawable mPlaceholder;
-
     @Bind(R.id.iv_movie)
     protected ImageView mImageView;
-
     @OnClick(R.id.iv_movie)
     public void onClickMovie(View v) {
         EventBus.getDefault().post(mMovie);
@@ -59,7 +65,8 @@ public class MovieItemView extends FrameLayout
         mGlide = isInEditMode() ? null : Glide.with(context);
 
         final int screenHeight = Utils.getScreenSize(context).y;
-        mHeight = screenHeight / 3 < AConstant.IMAGE_HEIGHT ? screenHeight / 3: AConstant.IMAGE_HEIGHT;
+        final int scH = screenHeight / 3;
+        mHeight = scH < AConstant.IMAGE_HEIGHT ? scH : AConstant.IMAGE_HEIGHT;
     }
 
     @Override
@@ -85,5 +92,21 @@ public class MovieItemView extends FrameLayout
     @Override
     public MovieItemView getSelf() {
         return this;
+    }
+
+    @Override
+    public void showError(String error) {
+    }
+
+    @Override
+    public void showLoading() {
+    }
+
+    @Override
+    public void hideLoading() {
+    }
+
+    @Override
+    public void showMovieInfo(@NonNull Movie movie) {
     }
 }

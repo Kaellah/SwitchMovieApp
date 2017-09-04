@@ -35,14 +35,6 @@ import butterknife.OnClick;
 public class MovieListFragment extends BaseFragment
         implements MovieListView {
 
-    public static final String LOG_TAG = "LOG_TAG";
-
-    private static final int SPAN_COUNT;
-
-    static {
-        SPAN_COUNT = 2;
-    }
-
     @Bind(R.id.recycler_view)
     protected RecyclerView mRecyclerView;
 
@@ -85,9 +77,7 @@ public class MovieListFragment extends BaseFragment
 
         mPresenter.onViewCreated(b);
 
-        final GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),
-//                SPAN_COUNT);
-                Utils.isLand(getContext()) ? 4 : 2); // temporary, need implement from App
+        final GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), Utils.isLand(getContext()) ? 4 : 2);
         mRecyclerView.setLayoutManager(gridLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 

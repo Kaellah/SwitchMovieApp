@@ -35,10 +35,6 @@ public class MovieInfoPresenter extends BasePresenter {
         mView = view;
     }
 
-//    public void onCreate(Bundle bundle) {
-//        mMovie = bundle.getParcelable(AConstant.EXTRA_MOVIE);
-//    }
-
     @Override
     public void onViewCreated(Bundle b) {
         if (b != null) {

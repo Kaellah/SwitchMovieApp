@@ -86,16 +86,12 @@ public class MovieInfoFragment extends BaseFragment
         }
         mViewComponent.inject(this);
         super.onCreate(b);
-
-//        mPresenter.onCreate(b == null ? getArguments() : b);
         mGlide = Glide.with(this);
     }
 
     @Override
     public void onViewCreated(View v, @Nullable Bundle b) {
         super.onViewCreated(v, b);
-
-//        mPresenter.onViewCreated(b);
         mPresenter.onViewCreated(b == null ? getArguments() : b);
     }
 
@@ -158,7 +154,7 @@ public class MovieInfoFragment extends BaseFragment
         @Override
         public boolean onResourceReady(Bitmap resource, String model, Target<Bitmap> target, boolean isFromMemoryCache, boolean isFirstResource) {
             final Bitmap blurBitmap = ImageUtils.fastBlur(resource);
-            BitmapDrawable ob = new BitmapDrawable(getResources(), blurBitmap);
+            final BitmapDrawable ob = new BitmapDrawable(getResources(), blurBitmap);
             mBackground.setBackground(ob);
             return false;
         }
