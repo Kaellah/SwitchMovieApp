@@ -1,6 +1,5 @@
 package com.kaellah.switchmovieapp.view.fragments;
 
-import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -8,15 +7,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.RequestManager;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 import com.kaellah.switchmovieapp.R;
 import com.kaellah.switchmovieapp.other.AConstant;
-import com.kaellah.switchmovieapp.other.ImageUtils;
 import com.kaellah.switchmovieapp.other.Utils;
 import com.kaellah.switchmovieapp.other.di.view.DaggerMovieViewComponent;
 import com.kaellah.switchmovieapp.other.di.view.MovieViewComponent;
@@ -38,8 +33,8 @@ import butterknife.BindDrawable;
 public class MovieInfoFragment extends BaseFragment
         implements MovieInfoView {
 
-    private static final String EXTRA_MOVIE = "local.EXTRA_MOVIE";
-
+    @Bind(R.id.ll_container)
+    protected View mContainer;
     @Bind(R.id.iv_movie)
     protected ImageView mIvMovie;
     @Bind(R.id.tv_score)
@@ -56,20 +51,17 @@ public class MovieInfoFragment extends BaseFragment
     protected View mBackground;
     @Bind(R.id.tv_error)
     protected TextView mTvError;
+    @BindDrawable(R.drawable.placeholder)
+    protected Drawable mPlaceholder;
 
     @Inject
     protected MovieInfoPresenter mPresenter;
 
     private MovieViewComponent mViewComponent;
 
-    @BindDrawable(R.drawable.placeholder)
-    protected Drawable mPlaceholder;
-
-    private RequestManager mGlide;
-
     public static MovieInfoFragment newInstance(@NonNull Movie movie) {
         final Bundle args = new Bundle(1);
-        args.putParcelable(EXTRA_MOVIE, movie);
+        args.putParcelable(AConstant.EXTRA_MOVIE, movie);
 
         final MovieInfoFragment fragment = new MovieInfoFragment();
         fragment.setArguments(args);
@@ -81,17 +73,19 @@ public class MovieInfoFragment extends BaseFragment
     public void onCreate(@Nullable Bundle b) {
         if (mViewComponent == null) {
             mViewComponent = DaggerMovieViewComponent.builder()
-                    .movieViewDynamicModule(new MovieViewDynamicModule(this))
+                    .movieViewDynamicModule(new MovieViewDynamicModule(this, getContext()))
                     .build();
         }
         mViewComponent.inject(this);
         super.onCreate(b);
-        mGlide = Glide.with(this);
     }
 
     @Override
     public void onViewCreated(View v, @Nullable Bundle b) {
         super.onViewCreated(v, b);
+
+        mContainer.setLayoutParams(mPresenter.getLayoutParams((LinearLayout.LayoutParams) mContainer.getLayoutParams()));
+
         mPresenter.onViewCreated(b == null ? getArguments() : b);
     }
 
@@ -114,12 +108,7 @@ public class MovieInfoFragment extends BaseFragment
     public void showMovieInfo(Movie movie) {
         mTvError.setVisibility(View.GONE);
 
-        mGlide
-                .load(Utils.getCorrectImageUrl(movie.getPosterPath(), AConstant.IMAGE_WIDTH))
-                .asBitmap()
-                .placeholder(mPlaceholder)
-                .listener(mRequestListener)
-                .into(mIvMovie);
+        mPresenter.loadImage(mPlaceholder, mIvMovie);
 
         mTvTitle.setText(movie.getTitle());
         mTvScore.setText(String.valueOf(movie.getVoteAverage()));
@@ -144,22 +133,6 @@ public class MovieInfoFragment extends BaseFragment
         Utils.cleanUp(mTvOverview);
     }
 
-    private final RequestListener<String, Bitmap> mRequestListener = new RequestListener<String, Bitmap>() {
-        @Override
-        public boolean onException(Exception e, String model, Target<Bitmap> target, boolean isFirstResource) {
-            showError("No data");
-            return false;
-        }
-
-        @Override
-        public boolean onResourceReady(Bitmap resource, String model, Target<Bitmap> target, boolean isFromMemoryCache, boolean isFirstResource) {
-            final Bitmap blurBitmap = ImageUtils.fastBlur(resource);
-            final BitmapDrawable ob = new BitmapDrawable(getResources(), blurBitmap);
-            mBackground.setBackground(ob);
-            return false;
-        }
-    };
-
     @Nullable
     @Override
     protected CharSequence getToolbarTitle() {
@@ -169,5 +142,10 @@ public class MovieInfoFragment extends BaseFragment
     @Override
     public void showError(String error) {
         mTvError.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void setBackground(BitmapDrawable ob) {
+        mBackground.setBackground(ob);
     }
 }

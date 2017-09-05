@@ -9,12 +9,10 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.RequestManager;
 import com.kaellah.switchmovieapp.R;
-import com.kaellah.switchmovieapp.other.AConstant;
-import com.kaellah.switchmovieapp.other.Utils;
-import com.kaellah.switchmovieapp.other.di.view.MovieViewComponent;
+import com.kaellah.switchmovieapp.other.di.view.DaggerMovieItemViewComponent;
+import com.kaellah.switchmovieapp.other.di.view.MovieItemViewComponent;
+import com.kaellah.switchmovieapp.other.di.view.MovieItemViewDynamicModule;
 import com.kaellah.switchmovieapp.presenter.MovieItemPresenter;
 import com.kaellah.switchmovieapp.presenter.vo.Movie;
 import com.kaellah.switchmovieapp.view.adapters.DataEntity;
@@ -37,55 +35,51 @@ import butterknife.OnClick;
 public class MovieItemView extends FrameLayout
         implements DataEntity<Movie, MovieItemView>, IMovieItemView {
 
-    // VALUES
-    private final RequestManager mGlide;
-    private final int mHeight;
-    private Movie mMovie;
-
     @Inject
     protected MovieItemPresenter mPresenter;
-    private MovieViewComponent mViewComponent;
+
+    private MovieItemViewComponent mViewComponent;
 
     @BindDrawable(R.drawable.placeholder)
     protected Drawable mPlaceholder;
+
     @Bind(R.id.iv_movie)
     protected ImageView mImageView;
+
     @OnClick(R.id.iv_movie)
     public void onClickMovie(View v) {
-        EventBus.getDefault().post(mMovie);
+        EventBus.getDefault().post(mPresenter.getMovie());
     }
 
     public MovieItemView(Context context) {
         super(context);
+
+        if (mViewComponent == null) {
+            mViewComponent = DaggerMovieItemViewComponent.builder()
+                    .movieItemViewDynamicModule(new MovieItemViewDynamicModule(this, context))
+                    .build();
+        }
+        mViewComponent.inject(this);
+
         {
             inflate(context, R.layout.view_item_movie, this);
         }
         ButterKnife.bind(this);
-
-        mGlide = isInEditMode() ? null : Glide.with(context);
-
-        final int screenHeight = Utils.getScreenSize(context).y;
-        final int scH = screenHeight / 3;
-        mHeight = scH < AConstant.IMAGE_HEIGHT ? scH : AConstant.IMAGE_HEIGHT;
     }
 
     @Override
     public void setLayoutParams(ViewGroup.LayoutParams params) {
-        params.width = LayoutParams.MATCH_PARENT;
-        params.height = mHeight;
-
-        super.setLayoutParams(params);
+        super.setLayoutParams(mPresenter.getLayoutParams(params));
     }
 
     @Override
     public void setData(@NonNull Movie movie, @NonNull Object... objects) {
-        mMovie = movie;
+        mPresenter.setData(movie, mPlaceholder, mImageView);
+    }
 
-        final String url = Utils.getCorrectImageUrl(movie.getPosterPath(), AConstant.IMAGE_WIDTH);
-        mGlide
-                .load(url)
-                .placeholder(mPlaceholder)
-                .into(mImageView);
+    @Override
+    public boolean isInEditMode() {
+        return super.isInEditMode();
     }
 
     @NonNull
@@ -104,9 +98,5 @@ public class MovieItemView extends FrameLayout
 
     @Override
     public void hideLoading() {
-    }
-
-    @Override
-    public void showMovieInfo(@NonNull Movie movie) {
     }
 }

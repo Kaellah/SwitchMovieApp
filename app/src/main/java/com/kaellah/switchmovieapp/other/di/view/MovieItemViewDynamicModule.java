@@ -1,5 +1,8 @@
 package com.kaellah.switchmovieapp.other.di.view;
 
+import android.content.Context;
+import android.support.annotation.NonNull;
+
 import com.kaellah.switchmovieapp.presenter.MovieItemPresenter;
 import com.kaellah.switchmovieapp.view.views.IMovieItemView;
 
@@ -15,12 +18,20 @@ public class MovieItemViewDynamicModule {
 
     private IMovieItemView mView;
 
-    public MovieItemViewDynamicModule(IMovieItemView view) {
+    private final Context mContext;
+
+    public MovieItemViewDynamicModule(IMovieItemView view, @NonNull Context context) {
         mView = view;
+        mContext = context;
     }
 
     @Provides
-    MovieItemPresenter provideMovieItemPresenter() {
-        return new MovieItemPresenter(mView);
+    MovieItemPresenter provideMovieItemPresenter(@NonNull Context context) {
+        return new MovieItemPresenter(mView, context);
+    }
+
+    @Provides
+    Context provideContext(){
+        return mContext;
     }
 }

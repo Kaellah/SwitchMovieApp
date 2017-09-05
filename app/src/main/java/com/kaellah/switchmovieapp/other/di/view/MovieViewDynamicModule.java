@@ -1,5 +1,8 @@
 package com.kaellah.switchmovieapp.other.di.view;
 
+import android.content.Context;
+import android.support.annotation.NonNull;
+
 import com.kaellah.switchmovieapp.presenter.MovieInfoPresenter;
 import com.kaellah.switchmovieapp.view.fragments.MovieInfoView;
 
@@ -15,12 +18,20 @@ public class MovieViewDynamicModule {
 
     private MovieInfoView mView;
 
-    public MovieViewDynamicModule(MovieInfoView view) {
+    private final Context mContext;
+
+    public MovieViewDynamicModule(MovieInfoView view, @NonNull Context context) {
         mView = view;
+        mContext = context;
     }
 
     @Provides
-    MovieInfoPresenter provideMovieListPresenter() {
-        return new MovieInfoPresenter(mView);
+    MovieInfoPresenter provideMovieListPresenter(@NonNull Context context) {
+        return new MovieInfoPresenter(mView, context);
+    }
+
+    @Provides
+    Context provideContext() {
+        return mContext;
     }
 }

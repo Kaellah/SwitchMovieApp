@@ -14,90 +14,96 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:textColor="@color/colorPrimary"
         android:text="@string/no_data"
+        android:textColor="@color/colorPrimary"
         android:visibility="gone"/>
 
-    <LinearLayout
-        android:id="@+id/ll_info"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
+        android:layout_height="wrap_content"
         android:layout_marginTop="?attr/actionBarSize">
 
+        <!--TODO: Replace on constraint layout in future-->
         <LinearLayout
+            android:id="@+id/ll_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="@dimen/spacing">
-
-            <ImageView
-                android:id="@+id/iv_movie"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:scaleType="centerCrop"/>
+            android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/spacing"
-                android:layout_weight="1.5"
-                android:orientation="vertical">
+                android:orientation="horizontal"
+                android:padding="@dimen/spacing">
 
-                <TextView
-                    style="@style/MovieTextView"
-                    android:text="@string/Score"
-                    android:textSize="@dimen/text_more"/>
+                <ImageView
+                    android:id="@+id/iv_movie"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:scaleType="centerCrop"/>
 
-                <TextView
-                    android:id="@+id/tv_score"
-                    style="@style/MovieTextView"
-                    android:textSize="@dimen/text_big"
-                    tools:text="8.2"/>
+                <LinearLayout
+                    android:id="@+id/ll_container"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/spacing"
+                    android:layout_weight="1.5"
+                    android:orientation="vertical">
 
-                <TextView
-                    style="@style/MovieTextView"
-                    android:layout_marginTop="@dimen/spacing"
-                    android:text="@string/Rating"
-                    android:textSize="@dimen/text_more"/>
+                    <TextView
+                        style="@style/MovieTextView"
+                        android:text="@string/Score"
+                        android:textSize="@dimen/text_more"/>
 
-                <TextView
-                    android:id="@+id/tv_rating"
-                    style="@style/MovieTextView"
-                    android:textSize="@dimen/text_big"
-                    tools:text="R"/>
+                    <TextView
+                        android:id="@+id/tv_score"
+                        style="@style/MovieTextView"
+                        android:textSize="@dimen/text_big"
+                        tools:text="8.2"/>
 
-                <TextView
-                    style="@style/MovieTextView"
-                    android:layout_marginTop="@dimen/spacing"
-                    android:text="@string/Release_date"
-                    android:textSize="@dimen/text_more"/>
+                    <TextView
+                        style="@style/MovieTextView"
+                        android:layout_marginTop="@dimen/spacing"
+                        android:text="@string/Rating"
+                        android:textSize="@dimen/text_more"/>
 
-                <TextView
-                    android:id="@+id/tv_release_date"
-                    style="@style/MovieTextView"
-                    android:textSize="@dimen/text_big"
-                    tools:text="July 17, 2015"/>
+                    <TextView
+                        android:id="@+id/tv_rating"
+                        style="@style/MovieTextView"
+                        android:textSize="@dimen/text_big"
+                        tools:text="R"/>
+
+                    <TextView
+                        style="@style/MovieTextView"
+                        android:layout_marginTop="@dimen/spacing"
+                        android:text="@string/Release_date"
+                        android:textSize="@dimen/text_more"/>
+
+                    <TextView
+                        android:id="@+id/tv_release_date"
+                        style="@style/MovieTextView"
+                        android:textSize="@dimen/text_big"
+                        tools:text="July 17, 2015"/>
+                </LinearLayout>
+
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/tv_title"
+                style="@style/MovieTextViewBig"
+                tools:text="Ant - Man(2015)"/>
+
+            <View
+                style="@style/Divider"/>
+
+            <TextView
+                android:id="@+id/tv_overview"
+                style="@style/MovieTextViewSmall"
+                tools:text="Bla bla bla bla"/>
+
+            <View
+                style="@style/Divider"/>
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/tv_title"
-            style="@style/MovieTextViewBig"
-            tools:text="Ant - Man(2015)"/>
-
-        <View
-            style="@style/Divider"/>
-
-        <TextView
-            android:id="@+id/tv_overview"
-            style="@style/MovieTextViewSmall"
-            tools:text="Bla bla bla bla"/>
-
-        <View
-            style="@style/Divider"/>
-    </LinearLayout>
-
+    </ScrollView>
 </FrameLayout>

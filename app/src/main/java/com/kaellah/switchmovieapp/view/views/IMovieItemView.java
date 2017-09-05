@@ -1,8 +1,5 @@
 package com.kaellah.switchmovieapp.view.views;
 
-import android.support.annotation.NonNull;
-
-import com.kaellah.switchmovieapp.presenter.vo.Movie;
 import com.kaellah.switchmovieapp.view.fragments.View;
 
 /**
@@ -12,5 +9,7 @@ import com.kaellah.switchmovieapp.view.fragments.View;
 
 public interface IMovieItemView extends View {
 
-    void showMovieInfo(@NonNull Movie movie);
+    boolean isInEditMode();
+
+//    void showMovieInfo(@NonNull Movie movie);
 }

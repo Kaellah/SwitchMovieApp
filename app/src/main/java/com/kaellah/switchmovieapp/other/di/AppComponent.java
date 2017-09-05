@@ -1,7 +1,9 @@
 package com.kaellah.switchmovieapp.other.di;
 
 import com.kaellah.switchmovieapp.model.ModelImpl;
+import com.kaellah.switchmovieapp.other.di.view.MovieItemViewDynamicModule;
 import com.kaellah.switchmovieapp.presenter.BasePresenter;
+import com.kaellah.switchmovieapp.presenter.MovieItemPresenter;
 import com.kaellah.switchmovieapp.presenter.MovieListPresenter;
 
 import javax.inject.Singleton;
@@ -13,7 +15,7 @@ import dagger.Component;
  * @since 16.03.17
  */
 @Singleton
-@Component(modules = {ModelModule.class, PresenterModule.class, ViewModule.class})
+@Component(modules = {ModelModule.class, PresenterModule.class, ViewModule.class, MovieItemViewDynamicModule.class})
 public interface AppComponent {
 
     void inject(ModelImpl dataRepository);
@@ -21,4 +23,6 @@ public interface AppComponent {
     void inject(BasePresenter basePresenter);
 
     void inject(MovieListPresenter movieListPresenter);
+
+    void inject(MovieItemPresenter movieItemPresenter);
 }
